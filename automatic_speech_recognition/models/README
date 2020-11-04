@@ -1,4 +1,6 @@
+
 # Implemented papers
 
 - `cnldnn` [Learning the Speech Front-end With Raw Waveform CLDNNs](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/43960.pdf)
+
 - `cnn_raw_speech` [Analysis of CNN-based Speech Recognition System using Raw Speech as Input](https://ronan.collobert.com/pub/matos/2015_cnnspeech_interspeech.pdf)
