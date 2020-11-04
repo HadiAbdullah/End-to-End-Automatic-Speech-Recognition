@@ -13,7 +13,7 @@ from tensorflow.keras import backend as K
 from tensorflow.python.keras.backend import ctc_label_dense_to_sparse
 
 
-def ctc_lambda_func(args):
+def _ctc_lambda_func(args):
     '''
     Setup the CTC loss as function.
     y_pred: The logits output from the model. Shape [batch_sz, times_steps, number_characters]
@@ -22,7 +22,7 @@ def ctc_lambda_func(args):
     '''
     y_pred, labels, label_length = args
     
-    def get_length(tensor):
+    def _get_length(tensor):
         '''
         Returns the length of a tensor
         Reference:
@@ -34,7 +34,7 @@ def ctc_lambda_func(args):
         return tf.cast(lengths, tf.int32)
 
     # extracts the number of time steps for the batch
-    input_length = get_length(tf.math.reduce_max(y_pred, 2))
+    input_length = _get_length(tf.math.reduce_max(y_pred, 2))
 
     return K.ctc_batch_cost(labels, y_pred, input_length, label_length)
 
@@ -46,6 +46,6 @@ def get_ctc_layer(logits, y_true, y_true_length):
     y_true_length: The length of the transcription. Shape [batch_sz, 1]
     '''
     
-    loss = Lambda(ctc_lambda_func, output_shape=(None,), name='ctc')([logits, y_true, y_true_length])
+    loss = Lambda(_ctc_lambda_func, output_shape=(None,), name='ctc')([logits, y_true, y_true_length])
 
     return loss

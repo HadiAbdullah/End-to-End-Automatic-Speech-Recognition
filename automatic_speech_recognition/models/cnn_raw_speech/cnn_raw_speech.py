@@ -25,8 +25,8 @@ def get_model(context = 300, filt_length_conv_1 = 150, filt_length_conv_2 = 5,
     input_audio_padded = layers.ZeroPadding1D(padding=(context), name = 'zero_padding_context')(input_audio)
 
     # Apply 1d filter: Shape [btch_sz, n_time, n_channels]
-    filt_length = 2 * context + 1 + filt_length
-    conv = layers.Conv1D(filters_conv_1, filt_length, strides=100, activation='relu', name="conv_1")(input_audio_padded)
+    filt_length_conv_1 = 2 * context + 1 + filt_length_conv_1
+    conv = layers.Conv1D(filters_conv_1, filt_length_conv_1, strides=100, activation='relu', name="conv_1")(input_audio_padded)
     conv = layers.Conv1D(filters_conv_2, filt_length_conv_2, strides = 1, activation='relu', name="conv_2")(conv)
     conv = layers.Conv1D(filters_conv_2, filt_length_conv_2, strides = 1, activation='relu', name="conv_3")(conv)
 
