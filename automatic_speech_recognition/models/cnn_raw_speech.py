@@ -2,13 +2,13 @@ import tensorflow as tf
 from tensorflow.keras import layers
 
 
-def get_model(context = 300, filt_length_conv_1 = 150, filt_length_conv_2 = 5, 
-              filters_conv_1 = 100, filters_conv_2 = 80, fc_neurons = 512):
+def get_layers(context = 300, filt_length_conv_1 = 150, filt_length_conv_2 = 5, 
+              number_filters_conv_1 = 100, number_filters_conv_2 = 80, fc_cells = 512):
     '''
     Returns the paramters that for a CNN based model.
     Consider chaning default parameters as per application.
     
-    Architecture: CNN->FC->Logits->ctc_loss.
+    Architecture: CNN->FC->Logits
     
     Reference:
     "Analysis of CNN-based Speech Recognition System using Raw Speech as Input"
@@ -26,12 +26,12 @@ def get_model(context = 300, filt_length_conv_1 = 150, filt_length_conv_2 = 5,
 
     # Apply 1d filter: Shape [btch_sz, n_time, n_channels]
     filt_length_conv_1 = 2 * context + 1 + filt_length_conv_1
-    conv = layers.Conv1D(filters_conv_1, filt_length_conv_1, strides=100, activation='relu', name="conv_1")(input_audio_padded)
-    conv = layers.Conv1D(filters_conv_2, filt_length_conv_2, strides = 1, activation='relu', name="conv_2")(conv)
-    conv = layers.Conv1D(filters_conv_2, filt_length_conv_2, strides = 1, activation='relu', name="conv_3")(conv)
+    conv = layers.Conv1D(number_filters_conv_1, filt_length_conv_1, strides=100, activation='relu', name="conv_1")(input_audio_padded)
+    conv = layers.Conv1D(number_filters_conv_2, filt_length_conv_2, strides = 1, activation='relu', name="conv_2")(conv)
+    conv = layers.Conv1D(number_filters_conv_2, filt_length_conv_2, strides = 1, activation='relu', name="conv_3")(conv)
 
     # Apply FC layer to each time step
-    fc = layers.TimeDistributed(layers.Dense(fc_neurons), name = 'fc')(conv)
+    fc = layers.TimeDistributed(layers.Dense(fc_cells), name = 'fc')(conv)
     fc = layers.ReLU()(fc)
     fc = layers.Dropout(rate=0.1)(fc)
 
